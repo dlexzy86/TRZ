@@ -1,0 +1,63 @@
+class AttendanceSystem:
+    def __init__(self):
+        self.members = {}
+        
+    def add_member(self, name):
+        self.members[name] = {'total': 1, 'attend': 0, 'duty': 0, 'leave': 0, 'others': 0}
+        print(f"{name} has been added.")
+
+    def update_status(self, name, status, count):
+        if name in self.members:
+            if status in self.members[name]:
+                self.members[name][status] += count
+                print(f"Updated {name}'s {status} count to {self.members[name][status]}.")
+            else:
+                print("Invalid status.")
+        else:
+            print(f"{name} not found.")
+    
+    def calculate_total(self):
+        total = sum([data['total'] for data in self.members.values()])
+        present = sum([data['attend'] for data in self.members.values()])
+        on_duty = sum([data['duty'] for data in self.members.values()])
+        on_leave = sum([data['leave'] for data in self.members.values()])
+        others = sum([data['others'] for data in self.members.values()])
+
+        absent = total - (present + on_duty + on_leave + others)
+
+        print(f"Total members: {total}")
+        print(f"Present: {present}")
+        print(f"On Duty: {on_duty}")
+        print(f"On Leave: {on_leave}")
+        print(f"Others: {others}")
+        print(f"Absent: {absent}")
+
+def main():
+    system = AttendanceSystem()
+
+    while True:
+        print("\nAttendance System Menu")
+        print("1. Add Member")
+        print("2. Update Status")
+        print("3. Calculate Total")
+        print("4. Exit")
+        
+        choice = input("Enter choice: ")
+        
+        if choice == '1':
+            name = input("Enter member name: ")
+            system.add_member(name)
+        elif choice == '2':
+            name = input("Enter member name: ")
+            status = input("Enter status (attend, duty, leave, others): ")
+            count = int(input("Enter count to update: "))
+            system.update_status(name, status, count)
+        elif choice == '3':
+            system.calculate_total()
+        elif choice == '4':
+            break
+        else:
+            print("Invalid choice.")
+
+if __name__ == "__main__":
+    main()
